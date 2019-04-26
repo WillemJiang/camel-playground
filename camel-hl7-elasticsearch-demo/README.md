@@ -3,11 +3,11 @@
 This demo accepts the HL7 messages and stores them into elasticsearch and local directory for auditing.
 There is a RESTful search service for the client to access the stored data.
 
-## Using HAPI TestPanel
+## Using HAPI TestPanel to talk the Camel Server
 
-1. Download TestPanel from
+1. Download TestPanel from [here(chosing linux version)](https://sourceforge.net/projects/hl7api/files/hapi-testpanel/2.0.1/)
 
-2. Create Sample project and Connect to localhost:8888 to send the request to the backend server.
+2. Create Sample project and connect to localhost:8888 to send the request to the backend server.
 
 ## Installing ElasticSearch
 
@@ -29,5 +29,5 @@ You just need to run the Application.main() from your favourite IDE or execute b
 
 		mvn compile && mvn spring-boot:run
 
- Users can query the RSS title with a key word from a RESTful service by accessing the service "http://localhost:8080/patient/search?q=xxx&max=10" from .
+ Users can query the patient record by using the family name from a RESTful service by accessing the service "http://localhost:8080/patient/search?q=xxx&max=10" .
 

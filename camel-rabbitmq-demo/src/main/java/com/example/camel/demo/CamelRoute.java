@@ -3,12 +3,16 @@ package com.example.camel.demo;
 import org.apache.camel.builder.RouteBuilder;
 
 import org.apache.camel.component.rabbitmq.RabbitMQComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.ConnectionFactory;
 
 @Component
 public class CamelRoute extends RouteBuilder {
+
+  @Autowired
+  MyBean myBean;
 
   @Override
   public void configure() throws Exception {
@@ -28,7 +32,7 @@ public class CamelRoute extends RouteBuilder {
 
 
     from("timer:hello?period=1000")
-        .transform(simple("Random number ${random(0,100)}"))
+        .transform(method(myBean, "generate"))
         .to("rabbitmq-1:foo");
 
     from("rabbitmq-1:foo")

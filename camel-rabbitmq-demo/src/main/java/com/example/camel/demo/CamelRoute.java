@@ -20,9 +20,11 @@ public class CamelRoute extends RouteBuilder {
     connectionFactory.setPassword("guest");
     RabbitMQComponent component = new RabbitMQComponent();
     component.setConnectionFactory(connectionFactory);
-    
-      
+
     getContext().addComponent("rabbitmq-1", component);
+
+    // We could remove camel component if we don't need the route
+    // getContext().removeComponent("rabbitmq-1");
 
 
     from("timer:hello?period=1000")

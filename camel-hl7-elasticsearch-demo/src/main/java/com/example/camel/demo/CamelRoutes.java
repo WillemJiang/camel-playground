@@ -83,8 +83,8 @@ public class CamelRoutes extends RouteBuilder {
         decoder.setCharset(Charset.forName("UTF-8"));
         decoder.setConvertLFtoCR(true);
 
-        simpleRegistry.put("hl7encoder", new HL7MLLPNettyEncoderFactory().newChannelHandler());
-        simpleRegistry.put("hl7decoder", new HL7MLLPNettyDecoderFactory().newChannelHandler());
+        simpleRegistry.put("hl7encoder", new HL7MLLPNettyEncoderFactory());
+        simpleRegistry.put("hl7decoder", new HL7MLLPNettyDecoderFactory());
 
 
     }

@@ -41,6 +41,7 @@ import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import ca.uhn.hl7v2.model.v24.message.ORU_R01;
@@ -61,35 +62,6 @@ public class CamelRoutes extends RouteBuilder {
     private String elasticsearchHostaddresses;
 
 
-
-    void updateCamelContext(CamelContext camelContext) throws Exception {
-
-        camelContext.getShutdownStrategy().setShutdownRoutesInReverseOrder(false);
-        // wait max 5 seconds for camel to stop:
-        camelContext.getShutdownStrategy().setTimeout(5L);
-        // setup the registry
-        CompositeRegistry compositeRegistry = new CompositeRegistry();
-        SimpleRegistry simpleRegistry = new SimpleRegistry();
-        compositeRegistry.addRegistry(camelContext.getRegistry());
-        compositeRegistry.addRegistry(simpleRegistry);
-        // Hack the context registry
-        ((DefaultCamelContext)camelContext).setRegistry(compositeRegistry);
-
-        HL7MLLPNettyEncoderFactory encoder = new HL7MLLPNettyEncoderFactory();
-        encoder.setCharset(Charset.forName("UTF-8"));
-        encoder.setConvertLFtoCR(true);
-
-        HL7MLLPNettyDecoderFactory decoder = new HL7MLLPNettyDecoderFactory();
-        decoder.setCharset(Charset.forName("UTF-8"));
-        decoder.setConvertLFtoCR(true);
-
-        simpleRegistry.put("hl7encoder", new HL7MLLPNettyEncoderFactory());
-        simpleRegistry.put("hl7decoder", new HL7MLLPNettyDecoderFactory());
-
-
-    }
-
-
     @Override
     public void configure() throws Exception {
 
@@ -103,8 +75,6 @@ public class CamelRoutes extends RouteBuilder {
         SplitterBean splitterBean = new SplitterBean();
 
         ValueBuilder ack = HL7.ack();
-
-        updateCamelContext(getContext());
 
         //TODO We need to setup the error handler to handle the message
 
